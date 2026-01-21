@@ -7,11 +7,12 @@ const APP_PORT = 5000;
 const app = express();
 app.use(express.json());
 
-// --- CONFIGURAÇÃO CONFIRMADA ---
+// --- CONFIGURAÇÃO PROD (LOCAL STABLE) ---
+// Usamos host.docker.internal para garantir conexão eterna com o Docker Desktop
 const ZABBIX_CONFIG = {
     url: "http://host.docker.internal:8080/api_jsonrpc.php", 
-    user: "Admin",    // 'A' maiúsculo é obrigatório
-    pass: "zabbix"    // A senha que funcionou no seu navegador
+    user: "Admin",
+    pass: "zabbix"
 };
 
 let zabbixToken = null;
@@ -62,7 +63,7 @@ async function fetchZabbixMetrics() {
             let cpuVal = parseFloat(res.data.result[0].lastvalue);
             realMetrics.cpu = Math.round(cpuVal);
             realMetrics.mem = Math.round(40 + (cpuVal * 0.5)); 
-            realMetrics.source = "Zabbix API";
+            realMetrics.source = "Zabbix API (Local)";
         }
     } catch (e) { zabbixToken = null; }
 }
