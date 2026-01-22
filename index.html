@@ -19,7 +19,7 @@
     --border-color: rgba(0, 243, 255, 0.3);
 }
 
-/* --- MODO CLARO (RENDERIZAÃ‡ÃƒO OTIMIZADA) --- */
+/* --- MODO CLARO (RENDERIZAÇÃO OTIMIZADA) --- */
 body.light-theme {
     --bg-main: #f0f2f5;
     --card-bg: rgba(255, 255, 255, 0.9);
@@ -81,7 +81,7 @@ body {
 .metric-title { font-size: 12px; color: var(--neon-cyan); letter-spacing: 1px; font-weight: 700; margin-bottom: 5px; display: block;}
 .metric-big { font-family: 'Orbitron'; font-size: 32px; color: var(--text-main); }
 
-/* --- BOTÃƒO SOC AVANÃ‡ADO --- */
+/* --- BOTÃO SOC AVANÇADO --- */
 .sec-box { text-align: center; padding: 15px 0; border: 1px solid var(--neon-green); margin-top: 10px; }
 .sec-text { font-family: 'Orbitron'; font-size: 18px; color: var(--neon-green); font-weight: 900; }
 
@@ -131,7 +131,7 @@ body {
             <i class="fa-solid fa-circle-half-stroke theme-switch" onclick="toggleTheme()"></i>
             <div class="sys-info">
                 <div id="lbl-server"><i class="fa-solid fa-server"></i> ONLINE</div>
-                <div style="cursor:pointer; color:var(--neon-red); font-weight:900" onclick="triggerChaos()">[ SIMULAR INVASÃƒO ]</div>
+                <div style="cursor:pointer; color:var(--neon-red); font-weight:900" onclick="triggerChaos()">[ SIMULAR INVASÃO ]</div>
             </div>
             <div class="lang-flags">
                 <img src="https://flagcdn.com/w40/br.png" style="width:20px; cursor:pointer" onclick="setLang('pt')">
@@ -147,11 +147,11 @@ body {
         </div>
 
         <div class="cyber-card">
-            <span class="metric-title">AMEAÃ‡A ATUAL</span>
+            <span class="metric-title">AMEAÇA ATUAL</span>
             <div class="sec-box">
                 <div class="sec-text" id="sec-status">SEGURO</div>
             </div>
-            <button onclick="startMitigation()" class="btn-mitigate" id="btn-mitigate">ACIONALIZAR MITIGAÃ‡ÃƒO DE INCIDENTES</button>
+            <button onclick="startMitigation()" class="btn-mitigate" id="btn-mitigate">ACIONALIZAR MITIGAÇÃO DE INCIDENTES</button>
             <div id="timer-display">10</div>
         </div>
     </div>
@@ -182,7 +182,7 @@ body {
 <script>
     let curLang = 'pt';
     const texts = {
-        pt: { secure: 'SEGURO', breach: 'INVASÃƒO CRÃTICA', btn: 'ACIONALIZAR MITIGAÃ‡ÃƒO DE INCIDENTES' },
+        pt: { secure: 'SEGURO', breach: 'INVASÃO CRÍTICA', btn: 'ACIONALIZAR MITIGAÇÃO DE INCIDENTES' },
         en: { secure: 'SECURE', breach: 'CRITICAL BREACH', btn: 'ACTIVATE INCIDENT MITIGATION' }
     };
 
@@ -200,7 +200,7 @@ body {
         document.body.classList.add('alert-mode');
         document.getElementById('sec-status').innerText = texts[curLang].breach;
         document.getElementById('btn-mitigate').style.display = 'block';
-        addLog("ALERTA: TRÃFEGO ANÃ”MALO DETECTADO NA PORTA 443", "CRIT");
+        addLog("ALERTA: TRÁFEGO ANÔMALO DETECTADO NA PORTA 443", "CRIT");
     }
 
     function addLog(msg, type="INFO") {
@@ -210,7 +210,7 @@ body {
         term.prepend(line);
     }
 
-    // --- LÃ“GICA DO TEMPORIZADOR SOC ---
+    // --- LÓGICA DO TEMPORIZADOR SOC ---
     async function startMitigation() {
         const btn = document.getElementById('btn-mitigate');
         const timerDiv = document.getElementById('timer-display');
@@ -244,10 +244,10 @@ body {
                 document.body.classList.remove('alert-mode');
                 document.getElementById('sec-status').innerText = texts[curLang].secure;
                 timerDiv.style.display = 'none';
-                addLog("AMEAÃ‡A NEUTRALIZADA PELO BACKEND PYTHON.", "SYS");
+                addLog("AMEAÇA NEUTRALIZADA PELO BACKEND PYTHON.", "SYS");
             }
         } catch (e) {
-            addLog("ERRO DE COMUNICAÃ‡ÃƒO COM O SERVIDOR.", "CRIT");
+            addLog("ERRO DE COMUNICAÇÃO COM O SERVIDOR.", "CRIT");
             timerDiv.style.display = 'none';
             document.getElementById('btn-mitigate').style.display = 'block';
         }
@@ -260,4 +260,4 @@ body {
     }
 </script>
 </body>
-</html> 
+</html>
