@@ -10,27 +10,26 @@
 
 <style>
 :root {
-    --bg-main: #030507;
-    --card-bg: rgba(10, 20, 30, 0.6);
+    --bg-main: #020b12; /* Azul ultra escuro de fundo */
+    --card-bg: rgba(6, 18, 26, 0.8);
     --text-main: #ffffff;
     --neon-cyan: #00f3ff;
     --neon-red: #ff0055;
     --neon-green: #0aff00;
-    --border-color: rgba(0, 243, 255, 0.3);
+    --border-color: rgba(0, 243, 255, 0.2);
 }
 
-/* --- MODO CLARO (RENDERIZAÇÃO OTIMIZADA) --- */
 body.light-theme {
-    --bg-main: #f0f2f5;
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --text-main: #1a1f26;
+    --bg-main: #f0f4f8;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-main: #0f172a;
     --neon-cyan: #2563eb;
-    --neon-red: #dc2626;
+    --neon-red: #e11d48;
     --neon-green: #16a34a;
     --border-color: rgba(37, 99, 235, 0.2);
 }
 
-* { box-sizing: border-box; transition: background 0.4s, color 0.4s, border 0.4s; }
+* { box-sizing: border-box; transition: all 0.3s ease; }
 
 body {
     margin: 0; padding: 20px;
@@ -38,68 +37,69 @@ body {
     color: var(--text-main);
     font-family: 'Rajdhani', sans-serif;
     height: 100vh; overflow: hidden;
-    background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
-    background-size: 40px 40px;
+    /* NOVO PLANO DE FUNDO TECNOLÓGICO */
+    background-image: 
+        linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.1), transparent);
+    background-size: 50px 50px, 50px 50px, 100% 100%;
+    position: relative;
+}
+
+/* Efeito de Linhas Glitch/Tech no Fundo */
+body::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0, 243, 255, 0.03) 1px, rgba(0, 243, 255, 0.03) 2px);
+    pointer-events: none; z-index: -1;
 }
 
 .cyber-grid {
     display: grid;
     grid-template-columns: 320px 1fr;
-    grid-template-rows: 60px 1fr 120px;
-    gap: 15px;
-    height: calc(100vh - 40px);
+    grid-template-rows: 60px 1fr 100px;
+    gap: 15px; height: calc(100vh - 40px);
 }
 
 .header {
-    grid-column: 1 / -1;
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 2px solid var(--neon-cyan);
-    padding: 0 20px;
+    grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 2px solid var(--neon-cyan); padding: 0 10px;
 }
-.logo { font-family: 'Orbitron'; font-size: 24px; font-weight: 900; letter-spacing: 1px; }
+.logo { font-family: 'Orbitron'; font-size: 22px; font-weight: 900; }
 .logo span { color: var(--neon-cyan); }
 
 .top-controls { display: flex; gap: 20px; align-items: center; }
-.sys-info { display: flex; gap: 15px; font-size: 12px; font-weight: bold; color: var(--neon-green); }
+.sys-info { display: flex; gap: 15px; font-size: 11px; font-weight: bold; color: var(--neon-green); }
 
-/* --- THEME TOGGLE --- */
-.theme-switch {
-    cursor: pointer; font-size: 18px; color: var(--neon-cyan);
-    margin-right: 15px; padding: 5px; border: 1px solid var(--neon-cyan); border-radius: 5px;
-}
+.theme-switch { cursor: pointer; color: var(--neon-cyan); font-size: 18px; }
+
+.lang-flags img { width: 22px; cursor: pointer; opacity: 0.5; margin-left: 8px; border: 1px solid transparent; }
+.lang-flags img.active { opacity: 1; border-color: var(--neon-cyan); box-shadow: 0 0 8px var(--neon-cyan); }
 
 .sidebar { grid-row: 2 / 3; display: flex; flex-direction: column; gap: 15px; }
 
 .cyber-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    padding: 15px; position: relative;
-    backdrop-filter: blur(10px);
+    background: var(--card-bg); border: 1px solid var(--border-color);
+    padding: 15px; backdrop-filter: blur(12px);
     clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 }
 
-.metric-title { font-size: 12px; color: var(--neon-cyan); letter-spacing: 1px; font-weight: 700; margin-bottom: 5px; display: block;}
-.metric-big { font-family: 'Orbitron'; font-size: 32px; color: var(--text-main); }
+.metric-title { font-size: 11px; color: var(--neon-cyan); letter-spacing: 1.5px; font-weight: 700; margin-bottom: 5px; display: block; text-transform: uppercase; }
+.metric-big { font-family: 'Orbitron'; font-size: 28px; color: var(--text-main); }
 
-/* --- BOTÃO SOC AVANÇADO --- */
-.sec-box { text-align: center; padding: 15px 0; border: 1px solid var(--neon-green); margin-top: 10px; }
-.sec-text { font-family: 'Orbitron'; font-size: 18px; color: var(--neon-green); font-weight: 900; }
+.sec-box { text-align: center; padding: 12px 0; border: 1px solid var(--neon-green); margin-top: 10px; }
+.sec-text { font-family: 'Orbitron'; font-size: 16px; color: var(--neon-green); font-weight: 800; }
 
 .btn-mitigate {
     display: none; width: 100%; margin-top: 10px;
     background: transparent; border: 1px solid var(--neon-red); color: var(--neon-red);
-    padding: 8px; font-family: 'Rajdhani'; font-size: 11px; font-weight: 700;
-    cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+    padding: 10px; font-family: 'Rajdhani'; font-size: 11px; font-weight: 700;
+    cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px;
 }
 .btn-mitigate:hover { background: var(--neon-red); color: #fff; box-shadow: 0 0 15px var(--neon-red); }
 
-/* --- TEMPORIZADOR DISCRETO --- */
 #timer-display {
-    display: none;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 28px; color: var(--neon-red);
-    text-align: center; margin-top: 5px;
-    letter-spacing: 5px;
+    display: none; font-family: 'Share Tech Mono', monospace;
+    font-size: 32px; color: var(--neon-red); text-align: center; margin-top: 5px;
 }
 
 .main-stage {
@@ -107,19 +107,19 @@ body {
     display: grid; grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 60% 40%; gap: 15px;
 }
-.grafana-frame { width: 100%; height: 100%; border: 0; }
+.grafana-frame { width: 100%; height: 100%; border: 0; border-radius: 4px; }
 
 .footer {
-    grid-column: 1 / -1; background: rgba(0,0,0,0.2); border-top: 1px solid var(--neon-cyan);
-    font-family: 'Share Tech Mono', monospace; font-size: 12px;
-    padding: 10px; color: var(--neon-cyan);
+    grid-column: 1 / -1; background: rgba(0,0,0,0.3); border-top: 1px solid var(--neon-cyan);
+    font-family: 'Share Tech Mono', monospace; font-size: 12px; padding: 12px; color: var(--neon-cyan);
+    display: flex; flex-direction: column-reverse; overflow: hidden;
 }
 
-/* ATAQUE */
+/* ALERTA */
 .alert-mode .sec-box { border-color: var(--neon-red); background: rgba(255, 0, 0, 0.05); }
-.alert-mode .sec-text { color: var(--neon-red); animation: blink 0.5s infinite; }
+.alert-mode .sec-text { color: var(--neon-red); animation: blink 0.6s infinite; }
 
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 </style>
 </head>
 <body class="dark-theme">
@@ -130,24 +130,24 @@ body {
         <div class="top-controls">
             <i class="fa-solid fa-circle-half-stroke theme-switch" onclick="toggleTheme()"></i>
             <div class="sys-info">
-                <div id="lbl-server"><i class="fa-solid fa-server"></i> ONLINE</div>
-                <div style="cursor:pointer; color:var(--neon-red); font-weight:900" onclick="triggerChaos()">[ SIMULAR INVASÃO ]</div>
+                <div id="lbl-server"><i class="fa-solid fa-server"></i> SERVER: ONLINE</div>
+                <div id="lbl-sim" style="cursor:pointer; color:var(--neon-red); font-weight:900" onclick="triggerChaos()">[ SIMULAR INVASÃO ]</div>
             </div>
             <div class="lang-flags">
-                <img src="https://flagcdn.com/w40/br.png" style="width:20px; cursor:pointer" onclick="setLang('pt')">
-                <img src="https://flagcdn.com/w40/us.png" style="width:20px; cursor:pointer" onclick="setLang('en')">
+                <img src="https://flagcdn.com/w40/br.png" id="flag-pt" class="active" onclick="setLang('pt')">
+                <img src="https://flagcdn.com/w40/us.png" id="flag-en" onclick="setLang('en')">
             </div>
         </div>
     </div>
 
     <div class="sidebar">
         <div class="cyber-card">
-            <span class="metric-title">CARGA DE REDE</span>
-            <span class="metric-big" id="net-load">1.2</span> <span style="font-size:12px">Tbps</span>
+            <span class="metric-title" id="t-net">CARGA DE REDE</span>
+            <span class="metric-big" id="net-load">1.42</span> <span style="font-size:12px">Tbps</span>
         </div>
 
         <div class="cyber-card">
-            <span class="metric-title">AMEAÇA ATUAL</span>
+            <span class="metric-title" id="t-threat">AMEAÇA ATUAL</span>
             <div class="sec-box">
                 <div class="sec-text" id="sec-status">SEGURO</div>
             </div>
@@ -158,41 +158,67 @@ body {
 
     <div class="main-stage">
         <div class="cyber-card" style="grid-column: span 2; padding:0; overflow:hidden">
-            <iframe class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=4&theme=dark" frameborder="0"></iframe>
+            <iframe id="frame-1" class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=4&theme=dark" frameborder="0"></iframe>
         </div>
         <div class="cyber-card" style="padding:0; overflow:hidden">
-            <iframe class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=2&theme=dark" frameborder="0"></iframe>
+            <iframe id="frame-2" class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=2&theme=dark" frameborder="0"></iframe>
         </div>
         <div class="cyber-card" style="padding:0; overflow:hidden">
-            <iframe class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=1&theme=dark" frameborder="0"></iframe>
+            <iframe id="frame-3" class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=1&theme=dark" frameborder="0"></iframe>
         </div>
         <div class="cyber-card" style="padding:0; overflow:hidden">
-            <iframe class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=3&theme=dark" frameborder="0"></iframe>
+            <iframe id="frame-4" class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=3&theme=dark" frameborder="0"></iframe>
         </div>
         <div class="cyber-card" style="padding:0; overflow:hidden">
-            <iframe class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=6&theme=dark" frameborder="0"></iframe>
+            <iframe id="frame-5" class="grafana-frame" src="http://localhost:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&panelId=6&theme=dark" frameborder="0"></iframe>
         </div>
     </div>
 
     <div class="footer" id="terminal-log">
-        <div> > SYSTEM STATUS: NOMINAL. MONITORING ACTIVE...</div>
+        <div id="log-init">> SYSTEM STATUS: NOMINAL. MONITORING ACTIVE...</div>
     </div>
 </div>
 
 <script>
     let curLang = 'pt';
     const texts = {
-        pt: { secure: 'SEGURO', breach: 'INVASÃO CRÍTICA', btn: 'ACIONALIZAR MITIGAÇÃO DE INCIDENTES' },
-        en: { secure: 'SECURE', breach: 'CRITICAL BREACH', btn: 'ACTIVATE INCIDENT MITIGATION' }
+        pt: {
+            secure: 'SEGURO', breach: 'INVASÃO CRÍTICA', 
+            btn: 'ACIONALIZAR MITIGAÇÃO DE INCIDENTES', 
+            net: 'CARGA DE REDE', threat: 'AMEAÇA ATUAL',
+            sim: '[ SIMULAR INVASÃO ]', server: '<i class="fa-solid fa-server"></i> SERVIDOR: ONLINE'
+        },
+        en: {
+            secure: 'SECURE', breach: 'CRITICAL BREACH', 
+            btn: 'ACTIVATE INCIDENT MITIGATION', 
+            net: 'NETWORK LOAD', threat: 'CURRENT THREAT',
+            sim: '[ SIMULATE BREACH ]', server: '<i class="fa-solid fa-server"></i> SERVER: ONLINE'
+        }
     };
+
+    function setLang(lang) {
+        curLang = lang;
+        // Bandeiras
+        document.getElementById('flag-pt').classList.toggle('active', lang === 'pt');
+        document.getElementById('flag-en').classList.toggle('active', lang === 'en');
+        
+        // Textos Dinâmicos
+        document.getElementById('t-net').innerText = texts[lang].net;
+        document.getElementById('t-threat').innerText = texts[lang].threat;
+        document.getElementById('btn-mitigate').innerText = texts[lang].btn;
+        document.getElementById('lbl-sim').innerText = texts[lang].sim;
+        document.getElementById('lbl-server').innerHTML = texts[lang].server;
+        
+        // Status de Segurança
+        const isAlert = document.body.classList.contains('alert-mode');
+        document.getElementById('sec-status').innerText = isAlert ? texts[lang].breach : texts[lang].secure;
+    }
 
     function toggleTheme() {
         document.body.classList.toggle('light-theme');
-        const frames = document.querySelectorAll('.grafana-frame');
         const theme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
-        frames.forEach(f => {
-            let src = f.src;
-            f.src = src.includes('theme=dark') ? src.replace('theme=dark', 'theme=light') : src.replace('theme=light', 'theme=dark');
+        document.querySelectorAll('.grafana-frame').forEach(f => {
+            f.src = f.src.includes('theme=dark') ? f.src.replace('theme=dark', 'theme=' + theme) : f.src.replace('theme=light', 'theme=' + theme);
         });
     }
 
@@ -210,11 +236,9 @@ body {
         term.prepend(line);
     }
 
-    // --- LÓGICA DO TEMPORIZADOR SOC ---
     async function startMitigation() {
         const btn = document.getElementById('btn-mitigate');
         const timerDiv = document.getElementById('timer-display');
-        
         btn.style.display = 'none';
         timerDiv.style.display = 'block';
         
@@ -224,39 +248,28 @@ body {
         const countdown = setInterval(async () => {
             timeLeft--;
             timerDiv.innerText = timeLeft;
-
             if (timeLeft <= 0) {
                 clearInterval(countdown);
+                timerDiv.style.display = 'none';
                 await executeFinalProtocol();
             }
         }, 1000);
     }
 
     async function executeFinalProtocol() {
-        const timerDiv = document.getElementById('timer-display');
         addLog("EXECUTANDO SCRIPT DE DEFESA ATIVA...", "WARN");
-        
         try {
-            const response = await fetch('http://localhost:5001/api/mitigate', { method: 'POST' });
-            const data = await response.json();
-
+            const res = await fetch('http://localhost:5001/api/mitigate', { method: 'POST' });
+            const data = await res.json();
             if (data.status === 'success') {
                 document.body.classList.remove('alert-mode');
                 document.getElementById('sec-status').innerText = texts[curLang].secure;
-                timerDiv.style.display = 'none';
                 addLog("AMEAÇA NEUTRALIZADA PELO BACKEND PYTHON.", "SYS");
             }
         } catch (e) {
             addLog("ERRO DE COMUNICAÇÃO COM O SERVIDOR.", "CRIT");
-            timerDiv.style.display = 'none';
             document.getElementById('btn-mitigate').style.display = 'block';
         }
-    }
-
-    function setLang(lang) {
-        curLang = lang;
-        document.getElementById('btn-mitigate').innerText = texts[lang].btn;
-        document.getElementById('sec-status').innerText = document.body.classList.contains('alert-mode') ? texts[lang].breach : texts[lang].secure;
     }
 </script>
 </body>
