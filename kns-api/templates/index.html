@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KNS // COMMAND_NODE_NOC/SOC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #01080e; --card-bg: rgba(6, 18, 26, 0.85); --text-main: #ffffff;
+            --neon-cyan: #00f3ff; --neon-red: #ff0055; --neon-green: #0aff00; --border-color: rgba(0, 243, 255, 0.3);
+            --overlay: rgba(1, 8, 14, 0.65);
+        }
+
+        body.light-theme {
+            --bg-main: #dce2e9; 
+            --card-bg: #ffffff; /* Branco sólido nas áreas das setas para evitar poluição visual */
+            --text-main: #2d3748; 
+            --neon-cyan: #1a56db; 
+            --neon-red: #c53030; 
+            --neon-green: #2f855a; 
+            --border-color: #cbd5e0;
+            --overlay: rgba(220, 226, 233, 0.5);
+        }
+
+        #emergency-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; pointer-events: none; background: rgba(255, 0, 0, 0);
+        }
+        .critical-active #emergency-overlay {
+            display: block; animation: frontal-red-blink 0.4s infinite;
+        }
+        @keyframes frontal-red-blink { 
+            0%, 100% { background: rgba(255, 0, 0, 0); } 
+            50% { background: rgba(255, 0, 0, 0.45); } 
+        }
+
+        * { box-sizing: border-box; transition: all 0.2s ease; }
+        body {
+            margin: 0; padding: 15px; background-color: var(--bg-main); color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif; height: 100vh; overflow: hidden;
+            background-image: linear-gradient(var(--overlay), var(--overlay)), 
+                              url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover; background-position: center; position: relative;
+        }
+
+        .cyber-grid { display: grid; grid-template-columns: 320px 1fr; grid-template-rows: 60px 1fr 40px; gap: 15px; height: calc(100vh - 30px); position: relative; z-index: 10; }
+        .header, .footer, .sidebar .cyber-card { background: var(--card-bg) !important; border: 1px solid var(--border-color); backdrop-filter: none !important; }
+        .header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        
+        /* NOVOS INDICADORES DE STATUS NO CABEÇALHO */
+        .status-indicators { display: flex; gap: 20px; margin-right: 15px; font-family: 'Orbitron'; font-size: 10px; font-weight: 900; }
+        .status-item { display: flex; align-items: center; gap: 8px; color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
+        .status-item i { font-size: 12px; }
+
+        .logo { font-family: 'Orbitron'; font-size: 20px; font-weight: 900; letter-spacing: 2px; }
+        .logo span { color: var(--neon-cyan); }
+
+        .top-controls { display: flex; gap: 20px; align-items: center; }
+        .lang-flags img { width: 24px; cursor: pointer; border: 1px solid transparent; }
+        .lang-flags img.active { border-bottom: 2px solid var(--neon-cyan); }
+
+        .sidebar { grid-row: 2; display: flex; flex-direction: column; gap: 15px; }
+        .sidebar .cyber-card { padding: 15px; position: relative; clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); }
+        
+        .main-stage { grid-column: 2; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 15px; }
+        .main-stage .cyber-card { background: rgba(0,0,0,0.1) !important; border: 1px solid var(--border-color); backdrop-filter: blur(4px) !important; }
+        .grafana-frame { width: 100%; height: 100%; border: 0; background: transparent !important; }
+
+        .metric-big { font-family: 'Orbitron'; font-size: 28px; color: var(--text-main); }
+        .sec-box { text-align: center; padding: 12px 0; border: 1px solid var(--neon-green); margin-top: 10px; }
+        .sec-text { font-family: 'Orbitron'; font-size: 18px; color: var(--neon-green); font-weight: 800; }
+        
+        #btn-mitigate { display: none; width: 100%; margin-top: 10px; background: var(--neon-red); color: white; border: none; padding: 12px; font-family: 'Orbitron'; font-size: 10px; cursor: pointer; font-weight: bold; }
+        #timer-display { display: none; font-family: 'Share Tech Mono'; font-size: 42px; color: var(--neon-red); text-align: center; margin-top: 10px; font-weight: 900; }
+        .footer { grid-column: 1 / -1; font-family: 'Share Tech Mono'; font-size: 11px; padding: 10px; color: var(--neon-cyan); }
+    </style>
+</head>
+<body class="dark-theme">
+    <div id="emergency-overlay"></div>
+    <div class="cyber-grid">
+        <div class="header">
+            <div class="logo">KNS // <span>COMMAND_NODE_NOC/SOC</span></div>
+            <div class="top-controls">
+                <div class="status-indicators">
+                    <div class="status-item"><i class="fa-solid fa-server"></i> SERVER: ONLINE</div>
+                    <div class="status-item"><i class="fa-solid fa-shield-halved"></i> FIREWALL: ACTIVE</div>
+                </div>
+                
+                <i class="fa-solid fa-circle-half-stroke" style="cursor:pointer; font-size:18px; color:var(--neon-cyan)" onclick="document.body.classList.toggle('light-theme')"></i>
+                <div id="lbl-sim" style="cursor:pointer; color:var(--neon-red); font-weight:900; font-size:11px; border:1px solid var(--neon-red); padding:4px 8px;" onclick="triggerChaos()">[ SIMULAR INVASÃO ]</div>
+                <div class="lang-flags">
+                    <img src="https://flagcdn.com/w40/br.png" id="flag-pt" class="active" onclick="setLang('pt')">
+                    <img src="https://flagcdn.com/w40/us.png" id="flag-en" onclick="setLang('en')">
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="cyber-card">
+                <span id="t-net" style="font-size:11px; color:var(--neon-cyan); font-weight:bold;">CARGA DE REDE</span><br>
+                <span class="metric-big">1.42 Tbps</span>
+            </div>
+            <div class="cyber-card">
+                <span id="t-threat" style="font-size:11px; color:var(--neon-cyan); font-weight:bold;">AMEAÇA ATUAL</span>
+                <div class="sec-box"><div id="sec-status" class="sec-text">SEGURO</div></div>
+                <div id="timer-display">10</div>
+                <button id="btn-mitigate" onclick="startMitigation()">INICIAR PROTOCOLO 9</button>
+            </div>
+        </div>
+
+        <div class="main-stage">
+            <div class="cyber-card" style="grid-column: span 2;"><iframe class="grafana-frame" id="g1"></iframe></div>
+            <div class="cyber-card"><iframe class="grafana-frame" id="g2"></iframe></div>
+            <div class="cyber-card"><iframe class="grafana-frame" id="g3"></iframe></div>
+            <div class="cyber-card"><iframe class="grafana-frame" id="g4"></iframe></div>
+            <div class="cyber-card"><iframe class="grafana-frame" id="g5"></iframe></div>
+        </div>
+        <div class="footer" id="terminal-log">> [SYS_STATUS]: NODES SECURE. MONITORING ACTIVE...</div>
+    </div>
+
+<script>
+    const serverIP = window.location.hostname || "localhost";
+    const grafanaBase = `http://${serverIP}:3000/d-solo/adlvx49/kns-monitor?orgId=1&refresh=2s&theme=dark&from=now-5m&to=now`;
+    
+    document.getElementById('g1').src = `${grafanaBase}&panelId=4`;
+    document.getElementById('g2').src = `${grafanaBase}&panelId=2`;
+    document.getElementById('g3').src = `${grafanaBase}&panelId=1`;
+    document.getElementById('g4').src = `${grafanaBase}&panelId=3`;
+    document.getElementById('g5').src = `${grafanaBase}&panelId=6`;
+
+    let countdownInterval;
+    let isMitigating = false;
+    let curLang = 'pt';
+    const texts = {
+        pt: { secure: 'SEGURO', breach: 'INVASÃO CRÍTICA', btn: 'INICIAR PROTOCOLO 9', net: 'CARGA DE REDE', threat: 'AMEAÇA ATUAL', sim: '[ SIMULAR INVASÃO ]', log: '> [SYS_STATUS]: NODES SECURE. MONITORING ACTIVE...', fail: '> [ALERTA]: FALHA DE RESPOSTA DETECTADA!' },
+        en: { secure: 'SECURE', breach: 'CRITICAL BREACH', btn: 'INITIATE PROTOCOL 9', net: 'NETWORK LOAD', threat: 'CURRENT THREAT', sim: '[ SIMULATE BREACH ]', log: '> [SYS_STATUS]: NODES SECURE. MONITORING ACTIVE...', fail: '> [ALERT]: RESPONSE FAILURE DETECTED!' }
+    };
+
+    function setLang(lang) {
+        curLang = lang;
+        document.getElementById('flag-pt').classList.toggle('active', lang === 'pt');
+        document.getElementById('flag-en').classList.toggle('active', lang === 'en');
+        document.getElementById('t-net').innerText = texts[lang].net;
+        document.getElementById('t-threat').innerText = texts[lang].threat;
+        document.getElementById('btn-mitigate').innerText = texts[lang].btn;
+        document.getElementById('lbl-sim').innerText = texts[lang].sim;
+        document.getElementById('sec-status').innerText = document.body.classList.contains('alert-mode') ? texts[lang].breach : texts[lang].secure;
+    }
+
+    function triggerChaos() {
+        isMitigating = false;
+        document.body.classList.remove('critical-active');
+        document.body.classList.add('alert-mode');
+        document.getElementById('sec-status').innerText = texts[curLang].breach;
+        document.getElementById('sec-status').style.color = 'var(--neon-red)';
+        document.getElementById('btn-mitigate').style.display = 'block';
+        document.getElementById('timer-display').style.display = 'block';
+        
+        let count = 10;
+        document.getElementById('timer-display').innerText = count;
+
+        clearInterval(countdownInterval);
+        countdownInterval = setInterval(() => {
+            count--;
+            document.getElementById('timer-display').innerText = count;
+            if (count <= 0) {
+                clearInterval(countdownInterval);
+                if (isMitigating === false) {
+                    document.body.classList.add('critical-active');
+                    document.getElementById('terminal-log').innerText = texts[curLang].fail;
+                }
+            }
+        }, 1000);
+    }
+
+    function startMitigation() {
+        isMitigating = true;
+        clearInterval(countdownInterval);
+        document.body.classList.remove('critical-active');
+        document.getElementById('btn-mitigate').style.display = 'none';
+        document.getElementById('timer-display').style.display = 'none';
+        setTimeout(finishMitigation, 2000);
+    }
+
+    async function finishMitigation() {
+        await fetch(`http://${serverIP}:5001/api/mitigate`, {method:'POST'}).catch(e => console.log("API offline"));
+        document.body.classList.remove('alert-mode', 'critical-active');
+        document.getElementById('sec-status').innerText = texts[curLang].secure;
+        document.getElementById('sec-status').style.color = 'var(--neon-green)';
+        document.getElementById('terminal-log').innerText = texts[curLang].log;
+    }
+</script>
+</body>
+</html>
