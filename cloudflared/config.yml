@@ -1,0 +1,7 @@
+﻿tunnel: d383f132-9152-48ba-9b22-d96593da57d8
+credentials-file: C:\Users\Kaleb\.cloudflared\d383f132-9152-48ba-9b22-d96593da57d8.json
+
+ingress:
+  - hostname: noc.knsconsultoria.com.br
+    service: http://localhost:3001
+  - service: http_status:404
