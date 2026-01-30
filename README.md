@@ -13,44 +13,33 @@ O **KNS Command Center** é uma plataforma de Observabilidade Full Stack projeta
 
 O projeto foi construído sobre os pilares da **Engenharia de Confiabilidade (SRE)**:
 
-* **Core:** HTML5, CSS3 (Cyberpunk Grid), JavaScript (ES6+)
-* **Transport:** Cloudflare Tunnel (Zero Trust Architecture)
+* **Core:** HTML5, CSS3, JavaScript (Localizado em \/web-portal\)
+* **Transport:** Cloudflare Tunnel (Zero Trust)
 * **Monitoramento:** Zabbix API + Grafana Integration
-* **Infraestrutura:** Windows Service Mode (Persistência Nativa)
+* **Infraestrutura:** Docker & Node.js (Localizado em \/infra\)
 
 ---
 
 ##  Logs de Engenharia (Deploy History)
 
-A infraestrutura é mantida com rigorosos padrões de documentação. Consulte os logs técnicos para detalhes de implementação:
+Documentação técnica movida para a pasta dedicada de governança:
 
-*  **[DEPLOY_LOG_20260130.md](./DEPLOY_LOG_20260130_1539.md)** - *Migração para Cloudflare Service Token e estabilização do Tunnel.*
-*  **[DEPLOY_LOG_JAN_2026.md](./DEPLOY_LOG_JAN_2026.md)** - *Case técnico do Protocolo 09.*
+*  **[Log de Deploy Jan/2026](./docs/DEPLOY_LOG_JAN_2026.md)**
+*  **[Log de Estabilização](./docs/DEPLOY_LOG_20260130_1539.md)**
 
 ---
 
-##  Quick Start (Instalação)
+##  Automação & Scripts
 
-Para replicar o ambiente de monitoramento:
+Ferramentas proprietárias para gestão de incidentes e logs (Protocolo 09):
 
-1.  **Clone o repositório:**
-    \\\ash
-    git clone https://github.com/Kaleb-Nunes/KNS-Command-Center.git
-    \\\
-
-2.  **Inicie o Tunnel (Zero Trust):**
-    \\\powershell
-    .\cloudflared.exe service install [SEU_TOKEN]
-    \\\
-
-3.  **Acesse o Portal:**
-    Navegue até \https://noc.knsconsultoria.com.br\
+*  **[KNS Deploy Engine](./scripts/New-KNSDeployLog.ps1)**
 
 ---
 
 ##  Contato & Professional Services
 
-**Kaleb Nunes dos Santos** *Founder & Head of Engineering @ KNS Consultoria Global*  Balneário Camboriú, SC - BR  
+**Kaleb Nunes dos Santos** *Founder & Head of Engineering @ KNS Consultoria Global*  [LinkedIn Profile](https://www.linkedin.com/in/kaleb-nunes/)
 
 ---
 * 2026 KNS Consultoria Global. All systems nominal.*
