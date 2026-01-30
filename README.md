@@ -2,7 +2,7 @@
 
 > **Status:** PRODUCTION-READY  | **Protocolo:** 09 | **Uptime:** 99.9%
 
-O **KNS Command Center** é uma plataforma de Observabilidade Full Stack projetada para monitoramento híbrido de alta performance. O sistema unifica métricas de infraestrutura crítica, segurança de rede e performance de aplicações em um Single Pane of Glass.
+O **KNS Command Center** é uma plataforma de Observabilidade Full Stack projetada para monitoramento híbrido de alta performance. O sistema unifica métricas de infraestrutura crítica, segurança de rede e performance de aplicações em um *Single Pane of Glass*.
 
 ![Dashboard Concept](https://github.com/Kaleb-Nunes/KNS-Command-Center/raw/main/assets/foto.jpg)
 *(Concept UI: Interface de Alta Performance)*
@@ -51,7 +51,6 @@ Para replicar o ambiente de monitoramento:
 ##  Contato & Professional Services
 
 **Kaleb Nunes dos Santos** *Founder & Head of Engineering @ KNS Consultoria Global*  Balneário Camboriú, SC - BR  
- [LinkedIn Profile](https://www.linkedin.com/in/kaleb-nunes/)
 
 ---
 * 2026 KNS Consultoria Global. All systems nominal.*
